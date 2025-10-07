@@ -57,3 +57,10 @@ API Usage
   "predicted_quality": 5,
 }
 ```
+![alt text](https://github.com/PriyankaRajRajendran/MLOps/blob/main/Labs/fastapi_lab1/assets/FastApi_WineQualityPredication_1.png)
+
+---
+![alt text](https://github.com/PriyankaRajRajendran/MLOps/blob/main/Labs/fastapi_lab1/assets/FastApi_WineQualityPredication_3.png)
+
+---
+![alt text](https://github.com/PriyankaRajRajendran/MLOps/blob/main/Labs/fastapi_lab1/assets/FastApi_WineQualityPredication_4.png)
