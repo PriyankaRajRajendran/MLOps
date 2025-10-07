@@ -1,0 +1,22 @@
+# Virtual Environments
+venv/
+env/
+ENV/
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.DS_Store
+
+# pytest
+.pytest_cache/logs/*.log
