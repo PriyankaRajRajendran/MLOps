@@ -1,0 +1,14 @@
+# Build the Docker image
+docker build -t wine-classifier .
+
+# Run the Docker container
+docker run -p 4000:4000 wine-classifier
+
+# After running, access the application at:
+# http://localhost:4000/predict
+
+# To view use Google Chrome 
+
+# To stop the container:
+
+# Press Ctrl + C in the terminal where it's running

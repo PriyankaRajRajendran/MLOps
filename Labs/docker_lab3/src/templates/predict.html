@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Quality Classification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        h1 {
+            color: #722f37;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 36px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        input[type="number"] {
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #722f37;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        #predictBtn {
+            background: linear-gradient(135deg, #722f37 0%, #a8414d 100%);
+            color: white;
+        }
+        #predictBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(114, 47, 55, 0.4);
+        }
+        #clearBtn {
+            background: #f44336;
+            color: white;
+        }
+        #clearBtn:hover {
+            background: #da190b;
+            transform: translateY(-2px);
+        }
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+        #result.show {
+            display: block;
+        }
+        .result-success {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+        }
+        .result-error {
+            background: #ffebee;
+            border: 2px solid #f44336;
+        }
+        .wine-class {
+            font-size: 32px;
+            font-weight: bold;
+            color: #722f37;
+            margin: 10px 0;
+        }
+        .confidence {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .probabilities {
+            text-align: left;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        .prob-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        .prob-bar {
+            flex: 1;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin: 0 10px;
+            overflow: hidden;
+        }
+        .prob-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #722f37 0%, #a8414d 100%);
+            transition: width 0.5s ease;
+        }
+        .loading {
+            text-align: center;
+            color: #722f37;
+            font-size: 16px;
+        }
+        .example-values {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: #666;
+            border-left: 4px solid #722f37;
+        }
+        .example-values strong {
+            color: #722f37;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .example-set {
+            margin: 5px 0;
+            padding: 5px;
+            background: white;
+            border-radius: 4px;
+        }
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍷 Wine Quality Classifier</h1>
+        <p class="subtitle">Enter wine chemical properties to classify the wine type</p>
+
+        <div class="example-values">
+            <strong>Example Wine Sample (Class 0):</strong>
+            <div class="example-set">
+                Alcohol: 13.2 | Malic Acid: 1.78 | Ash: 2.14 | Alcalinity: 11.2 | Magnesium: 100<br>
+                Phenols: 2.65 | Flavanoids: 2.76 | Nonflavanoid: 0.26 | Proanthocyanins: 1.28<br>
+                Color: 4.38 | Hue: 1.05 | OD280: 3.4 | Proline: 1050
+            </div>
+        </div>
+
+        <form id="predictionForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="alcohol">Alcohol (%)</label>
+                    <input type="number" id="alcohol" name="alcohol" step="0.01" required 
+                           placeholder="e.g., 13.2">
+                </div>
+
+                <div class="form-group">
+                    <label for="malic_acid">Malic Acid (g/L)</label>
+                    <input type="number" id="malic_acid" name="malic_acid" step="0.01" required 
+                           placeholder="e.g., 1.78">
+                </div>
+
+                <div class="form-group">
+                    <label for="ash">Ash (g/L)</label>
+                    <input type="number" id="ash" name="ash" step="0.01" required 
+                           placeholder="e.g., 2.14">
+                </div>
+
+                <div class="form-group">
+                    <label for="alcalinity">Alcalinity of Ash</label>
+                    <input type="number" id="alcalinity" name="alcalinity" step="0.1" required 
+                           placeholder="e.g., 11.2">
+                </div>
+
+                <div class="form-group">
+                    <label for="magnesium">Magnesium (mg/L)</label>
+                    <input type="number" id="magnesium" name="magnesium" step="1" required 
+                           placeholder="e.g., 100">
+                </div>
+
+                <div class="form-group">
+                    <label for="total_phenols">Total Phenols (g/L)</label>
+                    <input type="number" id="total_phenols" name="total_phenols" step="0.01" required 
+                           placeholder="e.g., 2.65">
+                </div>
+
+                <div class="form-group">
+                    <label for="flavanoids">Flavanoids (g/L)</label>
+                    <input type="number" id="flavanoids" name="flavanoids" step="0.01" required 
+                           placeholder="e.g., 2.76">
+                </div>
+
+                <div class="form-group">
+                    <label for="nonflavanoid_phenols">Nonflavanoid Phenols (g/L)</label>
+                    <input type="number" id="nonflavanoid_phenols" name="nonflavanoid_phenols" step="0.01" required 
+                           placeholder="e.g., 0.26">
+                </div>
+
+                <div class="form-group">
+                    <label for="proanthocyanins">Proanthocyanins (g/L)</label>
+                    <input type="number" id="proanthocyanins" name="proanthocyanins" step="0.01" required 
+                           placeholder="e.g., 1.28">
+                </div>
+
+                <div class="form-group">
+                    <label for="color_intensity">Color Intensity</label>
+                    <input type="number" id="color_intensity" name="color_intensity" step="0.01" required 
+                           placeholder="e.g., 4.38">
+                </div>
+
+                <div class="form-group">
+                    <label for="hue">Hue</label>
+                    <input type="number" id="hue" name="hue" step="0.01" required 
+                           placeholder="e.g., 1.05">
+                </div>
+
+                <div class="form-group">
+                    <label for="od280">OD280/OD315</label>
+                    <input type="number" id="od280" name="od280" step="0.01" required 
+                           placeholder="e.g., 3.4">
+                </div>
+
+                <div class="form-group">
+                    <label for="proline">Proline (mg/L)</label>
+                    <input type="number" id="proline" name="proline" step="1" required 
+                           placeholder="e.g., 1050">
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" id="predictBtn">Classify Wine</button>
+                <button type="button" id="clearBtn">Clear</button>
+            </div>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('predictionForm');
+        const resultDiv = document.getElementById('result');
+        const clearBtn = document.getElementById('clearBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            resultDiv.className = '';
+            resultDiv.innerHTML = '<div class="loading">🔄 Classifying wine...</div>';
+            resultDiv.classList.add('show');
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    resultDiv.className = 'result-error show';
+                    resultDiv.innerHTML = `<strong>Error:</strong> ${data.error}`;
+                } else {
+                    const confidence = (data.confidence * 100).toFixed(2);
+                    
+                    let probsHTML = '<div class="probabilities"><strong>All Classes:</strong>';
+                    for (const [wineClass, prob] of Object.entries(data.probabilities)) {
+                        const percentage = (prob * 100).toFixed(1);
+                        probsHTML += `
+                            <div class="prob-item">
+                                <span>${wineClass}:</span>
+                                <div class="prob-bar">
+                                    <div class="prob-fill" style="width: ${percentage}%"></div>
+                                </div>
+                                <span>${percentage}%</span>
+                            </div>
+                        `;
+                    }
+                    probsHTML += '</div>';
+
+                    resultDiv.className = 'result-success show';
+                    resultDiv.innerHTML = `
+                        <div class="wine-class">🍷 ${data.wine_class}</div>
+                        <div class="confidence">Confidence: ${confidence}%</div>
+                        ${probsHTML}
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result-error show';
+                resultDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+            }
+        });
+
+        clearBtn.addEventListener('click', () => {
+            form.reset();
+            resultDiv.classList.remove('show');
+            resultDiv.innerHTML = '';
+        });
+    </script>
+</body>
+</html>
