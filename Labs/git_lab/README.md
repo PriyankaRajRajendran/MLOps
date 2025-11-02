@@ -26,7 +26,7 @@ git_lab/
 - Modular code architecture
 - Comprehensive error handling
 
-## 🔧 Setup Instructions
+## Setup Instructions
 
 ### 1. Clone the Repository
 ```bash
@@ -120,7 +120,7 @@ This lab demonstrates:
 - Achieving high code coverage
 - Following MLOps best practices
 
-## 🚦 Workflow Status
+## Workflow Status
 
 | Workflow | Status |
 |----------|--------|
@@ -129,7 +129,7 @@ This lab demonstrates:
 | Code Coverage | 96% |
 | Total Tests | 44 |
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Python 3.8+**: Core programming language
 - **Pytest**: Modern testing framework
@@ -139,7 +139,7 @@ This lab demonstrates:
 - **Virtual Environment**: Dependency isolation
 
 
-## 👤 Author
+## Author
 **Priyanka**
 - Master's in Data Analytics Engineering
 - Course: IE-7374 (MLOps)
