@@ -140,7 +140,7 @@ This lab demonstrates:
 
 
 ## Author
-**Priyanka**
+**Priyanka Raj Rajendran**
 - Master's in Data Analytics Engineering
 - Course: IE-7374 (MLOps)
 ---
