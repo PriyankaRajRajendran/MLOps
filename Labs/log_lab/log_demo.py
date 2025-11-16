@@ -58,7 +58,7 @@ def setup_logging():
 def demo_logging():
     logger = setup_logging()
     
-    logger.info("Application started - Pranav's Custom Logging Demo")
+    logger.info("Application started - Priyanka Custom Logging Demo")
     logger.debug("This is a debug message with detailed information")
     logger.warning("This is a warning - something might need attention")
     logger.error("This is an error message")
