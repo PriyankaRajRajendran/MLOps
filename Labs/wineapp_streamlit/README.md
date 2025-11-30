@@ -56,6 +56,21 @@ streamlit run Dashboard.py
 ```
 Opens at http://localhost:8501
 
+### Our Enhanced Wine App
+- **Dataset**: Wine quality (11 chemical features + type)
+- **Interface**: 4-tab professional dashboard
+- **Model**: Binary classification with confidence scores
+- **Features**: Analytics, learning content, batch processing
+- **UI**: Custom styling, charts, interactive visualizations
+
+- 11 chemical property sliders 
+- Wine type selector (Red/White)
+- **Quick Presets** (Premium/Average) 
+- Real-time wine profile display 
+- Confidence meter with progress bar 
+- Quality improvement suggestions 
+
+
 ## Application Features
 
 ### Predict Tab
@@ -79,13 +94,15 @@ Opens at http://localhost:8501
 - Sample template download
 
 ## Model Performance
-- **Accuracy**: 85.8%
-- **Top Features**: Alcohol (21%), Density (13%), Volatile Acidity (9%)
-- **Binary Classification**: High Quality (≥7) vs Standard (<7)
+- **Algorithm**: Random Forest 
+- **Accuracy**: 85.8% 
+- **Dataset**: 6,497 samples 
+- **Features**: 11 chemical + 1 type 
+- **Top 3 Important Features**:
+  1. Alcohol (21.1%)
+  2. Density (13.1%)
+  3. Volatile Acidity (9.3%)
 
-## API Endpoints
-- `GET /` - Health check
-- `POST /predict` - Wine quality prediction
 
 ## Dataset Features
 | Feature | Range | Unit |
