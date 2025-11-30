@@ -120,5 +120,4 @@ Opens at http://localhost:8501
 | Alcohol | 8.0-15.0 | % |
 
 ## Author
-Priyanka Raj 
-Mlops Labs
+Priyanka Raj (Mlops Labs)
